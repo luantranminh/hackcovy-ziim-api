@@ -21,9 +21,9 @@ def update_zoom_meeting(admin_email, meeting_id, zoom_meeting_id, zoom_meeting_p
 
 
 # print(ob.sql_fetch('SELECT * FROM "'+Meeting_Table + '"'))
-def get_zoom_meeting(admin_email, meeting_id):
+def get_zoom_meeting(meeting_id):
     ob = SQLite_id_pass(dataBase)
-    res =  (ob.get_id_pass(admin_email, meeting_id))
+    res =  (ob.get_id_pass(meeting_id))
     print('get: ',res)
     ob.end()
     return res

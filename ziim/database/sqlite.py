@@ -52,13 +52,8 @@ class SQLite_id_pass(SQLite):
         print('update\n')
         self.sql_update('UPDATE "'+Meeting_Table + '" SET '+Meeting_Columns[4] + ' = "' + zoom_meeting_id + '", '+Meeting_Columns[5] + ' = "' + zoom_meeting_password + '" WHERE ' + Meeting_Columns[0] + ' = ' + str(meeting_id) + '')
         return True
-    def get_id_pass(self, admin_email, meeting_id):
-        rows = self.sql_fetch('SELECT * FROM "'+Admin_Table + '" WHERE '+Admin_Columns[1] + ' = "' + admin_email + '"')
-        if len(rows) == 0:
-            print('no match admin')
-            return None, None
-        admin_id = rows[0][0]
-        rows = self.sql_fetch('SELECT * FROM "'+Meeting_Table + '" WHERE '+Meeting_Columns[1] + ' = "' + str(admin_id) + '" AND ' + Meeting_Columns[0] + ' = "' + str(meeting_id) + '"')
+    def get_id_pass(self, meeting_id):
+        rows = self.sql_fetch('SELECT * FROM "'+Meeting_Table + '" WHERE '+ Meeting_Columns[0] + ' = "' + str(meeting_id) + '"')
         if len(rows) == 0:
             print('no match meeting')
             return None, None

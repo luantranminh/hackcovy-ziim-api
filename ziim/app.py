@@ -6,7 +6,7 @@ app = Flask(__name__)
 # def success(meeting_id, password):
 #     return ('Nhận {0} và {1}'.format(meeting_id, password))
 
-@app.route('/send_zoom_meeting_id_pass',methods = ['POST', 'GET'])
+@app.route('/send_zoom_meeting_id_pass',methods = ['POST'])
 def send_zoom_meeting_id_pass():
     if request.method == 'POST':
         admin_email = request.form['admin_email']
@@ -15,7 +15,7 @@ def send_zoom_meeting_id_pass():
         zoom_meeting_password = request.form['zoom_meeting_password']
     #   return redirect(url_for('success',meeting_id = meeting_id, password = password))
         # admin_email, meeting_id, zoom_meeting_id, zoom_meeting_password = 'first_admin@gmail.com', 2, 'meeting_id', 'new_pass2'
-        return str(update_zoom_meeting(admin_email, meeting_id, zoom_meeting_id, zoom_meeting_password))
+        return {'update':update_zoom_meeting(admin_email, meeting_id, zoom_meeting_id, zoom_meeting_password)}
     else:
         admin_email = request.args.get('admin_email')
         meeting_id = request.args.get('meeting_id')
@@ -23,20 +23,22 @@ def send_zoom_meeting_id_pass():
         zoom_meeting_password = request.args.get('zoom_meeting_password')
     #   return redirect(url_for('success',meeting_id = meeting_id, password = password))
         # admin_email, meeting_id, zoom_meeting_id, zoom_meeting_password = 'first_admin@gmail.com', 2, 'meeting_id', 'new_pass2'
-        return str(update_zoom_meeting(admin_email, meeting_id, zoom_meeting_id, zoom_meeting_password))
+        return {'update':update_zoom_meeting(admin_email, meeting_id, zoom_meeting_id, zoom_meeting_password)}
 
-@app.route('/get_zoom_meeting_id_pass',methods = ['POST', 'GET'])
+@app.route('/get_zoom_meeting_id_pass',methods = ['GET'])
 def get_zoom_meeting_id_pass():
-    if request.method == 'POST':
-        admin_email = request.form['admin_email']
-        meeting_id = request.form['meeting_id']
-    #   return redirect(url_for('success',meeting_id = meeting_id, password = password))
-        return str(get_zoom_meeting(admin_email, meeting_id))
-    else:
-        admin_email = request.args.get('admin_email')
-        meeting_id = request.args.get('meeting_id')
-    #   return redirect(url_for('success',meeting_id = meeting_id, password = password))
-        return str(get_zoom_meeting(admin_email, meeting_id)
+    # if request.method == 'POST':
+    #     meeting_id = request.form['meeting_id']
+    # #   return redirect(url_for('success',meeting_id = meeting_id, password = password))
+    #     zoom_meeting_id, zoom_meeting_password = (get_zoom_meeting(meeting_id))
+    #     return {'zoom_meeting_id':zoom_meeting_id,
+    #             'zoom_meeting_password':zoom_meeting_password}
+    # else:
+    meeting_id = request.args.get('meeting_id')
+#   return redirect(url_for('success',meeting_id = meeting_id, password = password))
+    zoom_meeting_id, zoom_meeting_password = (get_zoom_meeting(meeting_id))
+    return {'zoom_meeting_id':zoom_meeting_id,
+            'zoom_meeting_password':zoom_meeting_password}
 
 if __name__ == '__main__':
     app.run("localhost", 1411, threaded=True, debug=True)
