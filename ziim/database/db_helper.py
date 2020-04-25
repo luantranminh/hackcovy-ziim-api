@@ -34,7 +34,7 @@ def is_exists(statement):
 
         sqlite_select_query = statement
         cursor.execute(sqlite_select_query)
-        totalRows = cursor.fetchone()
+        totalRows = cursor.fetchone()[0]
         cursor.close()
 
         return totalRows > 0

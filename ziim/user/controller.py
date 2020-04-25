@@ -20,6 +20,25 @@ def pay(event_id):
     
     return jsonify({'message': res}), 200
 
+@user_blueprint.route('/code_verification', methods=["GET"])
+def check_code():
+    data = request.get_json()
+    if(not data):
+        return jsonify({'error': 'missing body'}), 400
+
+    code = data.get('code', '')
+    event_id = data.get('event_id', '')
+
+    check_exists_statement = """
+            SELECT COUNT(1)
+            FROM event_code
+            WHERE code = '{0}' AND event_id = {1}
+        """.format(code, event_id)
+    is_exists = db_helper.is_exists(check_exists_statement)
+
+    
+    return jsonify({'message': is_exists}), 200
+
 
 
 def __send_meeting_info_email(receiver_email, code):
@@ -43,7 +62,7 @@ def __save_code(event_id):
         check_exists_statement = """
                 SELECT COUNT(1)
                 FROM event_code
-                WHERE code = {0}
+                WHERE code = '{0}'
             """.format(code)
 
         is_exists = db_helper.is_exists(check_exists_statement)
@@ -54,7 +73,6 @@ def __save_code(event_id):
                 INSERT INTO event_code(event_id, is_used, code) values ({0}, {1}, '{2}')
             """.format(event_id, 0, code)
 
-        print(insert_statement)
         inserted = db_helper.insert(insert_statement)
 
     return code
