@@ -1,7 +1,10 @@
 from flask import Flask, redirect, url_for, request
 from admin.controller import update_zoom_meeting, get_zoom_meeting
+
+from user.controller import user_blueprint
 app = Flask(__name__)
 
+app.register_blueprint(user_blueprint)
 
 @app.route('/send_zoom_meeting_id_pass',methods = ['POST'])
 def send_zoom_meeting_id_pass():

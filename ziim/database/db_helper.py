@@ -4,7 +4,7 @@ import sys
 
 def insert(statement):
     try:
-        sqliteConnection = sqlite3.connect('SQLite_Python.db')
+        sqliteConnection = sqlite3.connect('ziim.db')
         cursor = sqliteConnection.cursor()
         print("Successfully Connected to SQLite")
     
@@ -13,9 +13,12 @@ def insert(statement):
         count = cursor.execute(sqlite_insert_query)
         sqliteConnection.commit()
         cursor.close()
+        return True
 
     except sqlite3.Error as error:
         print("Failed to insert data into sqlite table")
+        print(error)
+        return False
 
     finally:
         if (sqliteConnection):
@@ -25,7 +28,7 @@ def insert(statement):
 
 def is_exists(statement):
     try:
-        sqliteConnection = sqlite3.connect('SQLite_Python.db', timeout=20)
+        sqliteConnection = sqlite3.connect('ziim.db', timeout=20)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
 
@@ -37,6 +40,7 @@ def is_exists(statement):
         return totalRows > 0
     except sqlite3.Error as error:
         print("Failed to read data from sqlite table", error)
+        return False
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
