@@ -12,6 +12,8 @@ class SQLite:
             return con
         except Error:
             print(Error)
+    def end(self):
+        self.con.close()
     def sql_insert(self, tableName, entities):
         cursorObj = self.con.cursor()
         # cursorObj.execute('INSERT INTO '+tableName+ ' ' +columns+' VALUES(?' + ', ?'*(len(entities)-1) +')', entities)
